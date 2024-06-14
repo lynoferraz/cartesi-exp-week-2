@@ -1,0 +1,1387 @@
+{
+  "_format": "ethers-rs-sol-cache-3",
+  "paths": {
+    "artifacts": "app/contracts",
+    "build_infos": "app/contracts/build-info",
+    "sources": "contracts",
+    "tests": "test",
+    "scripts": "script",
+    "libraries": [
+      "node_modules"
+    ]
+  },
+  "files": {
+    "contracts/RivesScoreNFT.sol": {
+      "lastModificationDate": 1708886881366,
+      "contentHash": "bc1b38f65c973adb0cb3c1fe7eb2c916",
+      "sourceName": "contracts/RivesScoreNFT.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@cartesi/rollups/contracts/common/CanonicalMachine.sol",
+        "node_modules/@cartesi/rollups/contracts/common/OutputEncoding.sol",
+        "node_modules/@cartesi/rollups/contracts/consensus/IConsensus.sol",
+        "node_modules/@cartesi/rollups/contracts/dapp/ICartesiDApp.sol",
+        "node_modules/@cartesi/rollups/contracts/library/LibOutputValidation.sol",
+        "node_modules/@cartesi/util/contracts/Bitmask.sol",
+        "node_modules/@cartesi/util/contracts/CartesiMathV2.sol",
+        "node_modules/@cartesi/util/contracts/MerkleV2.sol",
+        "node_modules/@openzeppelin/contracts/interfaces/IERC165.sol",
+        "node_modules/@openzeppelin/contracts/interfaces/IERC4906.sol",
+        "node_modules/@openzeppelin/contracts/interfaces/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "node_modules/@openzeppelin/contracts/utils/Address.sol",
+        "node_modules/@openzeppelin/contracts/utils/Context.sol",
+        "node_modules/@openzeppelin/contracts/utils/Counters.sol",
+        "node_modules/@openzeppelin/contracts/utils/Strings.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/Math.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "RivesScoreNFT": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "RivesScoreNFT.sol/RivesScoreNFT.json"
+        }
+      }
+    },
+    "contracts/TestToken.sol": {
+      "lastModificationDate": 1709149776343,
+      "contentHash": "331812f621acc816bcc3c2c20b3113ea",
+      "sourceName": "contracts/TestToken.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "node_modules/@openzeppelin/contracts/utils/Context.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "TestToken": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "TestToken.sol/TestToken.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/rollups/contracts/common/CanonicalMachine.sol": {
+      "lastModificationDate": 1707515447917,
+      "contentHash": "df39889e4aa54f4a24250abaa85a3e15",
+      "sourceName": "node_modules/@cartesi/rollups/contracts/common/CanonicalMachine.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.8",
+      "artifacts": {
+        "CanonicalMachine": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "CanonicalMachine.sol/CanonicalMachine.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/rollups/contracts/common/OutputEncoding.sol": {
+      "lastModificationDate": 1707515447917,
+      "contentHash": "c0b8e9b36c66c194d0b2b45154abd1f8",
+      "sourceName": "node_modules/@cartesi/rollups/contracts/common/OutputEncoding.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.8",
+      "artifacts": {
+        "OutputEncoding": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "OutputEncoding.sol/OutputEncoding.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/rollups/contracts/consensus/IConsensus.sol": {
+      "lastModificationDate": 1707515447917,
+      "contentHash": "d54440a41e159c21a9cc731c60b37aea",
+      "sourceName": "node_modules/@cartesi/rollups/contracts/consensus/IConsensus.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.8",
+      "artifacts": {
+        "IConsensus": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IConsensus.sol/IConsensus.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/rollups/contracts/dapp/ICartesiDApp.sol": {
+      "lastModificationDate": 1707515447917,
+      "contentHash": "c0ee0ac2f2c5ca3ad6f1887c7a8a2a0e",
+      "sourceName": "node_modules/@cartesi/rollups/contracts/dapp/ICartesiDApp.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@cartesi/rollups/contracts/common/CanonicalMachine.sol",
+        "node_modules/@cartesi/rollups/contracts/common/OutputEncoding.sol",
+        "node_modules/@cartesi/rollups/contracts/consensus/IConsensus.sol",
+        "node_modules/@cartesi/rollups/contracts/library/LibOutputValidation.sol",
+        "node_modules/@cartesi/util/contracts/CartesiMathV2.sol",
+        "node_modules/@cartesi/util/contracts/MerkleV2.sol"
+      ],
+      "versionRequirement": "^0.8.8",
+      "artifacts": {
+        "ICartesiDApp": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ICartesiDApp.sol/ICartesiDApp.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/rollups/contracts/library/LibOutputValidation.sol": {
+      "lastModificationDate": 1707515447917,
+      "contentHash": "8fd449144d755d971d186a88e9a7dd94",
+      "sourceName": "node_modules/@cartesi/rollups/contracts/library/LibOutputValidation.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@cartesi/rollups/contracts/common/CanonicalMachine.sol",
+        "node_modules/@cartesi/rollups/contracts/common/OutputEncoding.sol",
+        "node_modules/@cartesi/util/contracts/CartesiMathV2.sol",
+        "node_modules/@cartesi/util/contracts/MerkleV2.sol"
+      ],
+      "versionRequirement": "^0.8.8",
+      "artifacts": {
+        "LibOutputValidation": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "LibOutputValidation.sol/LibOutputValidation.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/util/contracts/Bitmask.sol": {
+      "lastModificationDate": 1707515447918,
+      "contentHash": "d439022827350d384948fa61f5463ca5",
+      "sourceName": "node_modules/@cartesi/util/contracts/Bitmask.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "Bitmask": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Bitmask.sol/Bitmask.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/util/contracts/CartesiMathV2.sol": {
+      "lastModificationDate": 1707515447918,
+      "contentHash": "a8fb2dd8e5a4a0e4858eea65e8e443a0",
+      "sourceName": "node_modules/@cartesi/util/contracts/CartesiMathV2.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "CartesiMathV2": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "CartesiMathV2.sol/CartesiMathV2.json"
+        }
+      }
+    },
+    "node_modules/@cartesi/util/contracts/MerkleV2.sol": {
+      "lastModificationDate": 1707515447918,
+      "contentHash": "c2785e7fe4b111ca1ec22bf387067b7a",
+      "sourceName": "node_modules/@cartesi/util/contracts/MerkleV2.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@cartesi/util/contracts/CartesiMathV2.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "MerkleV2": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "MerkleV2.sol/MerkleV2.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/interfaces/IERC165.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "ee9624272968c23d93d4c2e39f06e6e2",
+      "sourceName": "node_modules/@openzeppelin/contracts/interfaces/IERC165.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC165": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC165.sol/IERC165.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/interfaces/IERC4906.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "d3f355e15269d1476d86c84730cebb5e",
+      "sourceName": "node_modules/@openzeppelin/contracts/interfaces/IERC4906.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/interfaces/IERC165.sol",
+        "node_modules/@openzeppelin/contracts/interfaces/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC4906": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC4906.sol/IERC4906.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/interfaces/IERC721.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "e6da7798a8c22c5043cc42d64a2a8f80",
+      "sourceName": "node_modules/@openzeppelin/contracts/interfaces/IERC721.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC721": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC721.sol/IERC721.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "3ae5166c6827a9cf1a7a462d1632b464",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "node_modules/@openzeppelin/contracts/utils/Context.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "ERC20": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ERC20.sol/ERC20.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC20": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC20.sol/IERC20.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC20Metadata": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC20Metadata.sol/IERC20Metadata.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "95602b04f0b53f1139f4668d123ddeb7",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "node_modules/@openzeppelin/contracts/utils/Address.sol",
+        "node_modules/@openzeppelin/contracts/utils/Context.sol",
+        "node_modules/@openzeppelin/contracts/utils/Strings.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/Math.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "ERC721": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ERC721.sol/ERC721.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "48de4c9a3a4ae5ef66a2aa620843413f",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC721": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC721.sol/IERC721.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "c22d4395e33763de693fd440c6fd10e1",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC721Receiver": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC721Receiver.sol/IERC721Receiver.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "de368c6a87e159c86544ae5041b58cf3",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/interfaces/IERC165.sol",
+        "node_modules/@openzeppelin/contracts/interfaces/IERC4906.sol",
+        "node_modules/@openzeppelin/contracts/interfaces/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+        "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "node_modules/@openzeppelin/contracts/utils/Address.sol",
+        "node_modules/@openzeppelin/contracts/utils/Context.sol",
+        "node_modules/@openzeppelin/contracts/utils/Strings.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/Math.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "ERC721URIStorage": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ERC721URIStorage.sol/ERC721URIStorage.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "efbc0d15b80a74e34dbe8da0f3e879bb",
+      "sourceName": "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC721Metadata": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC721Metadata.sol/IERC721Metadata.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.1",
+      "artifacts": {
+        "Address": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Address.sol/Address.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "Context": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Context.sol/Context.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/Counters.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "Counters": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Counters.sol/Counters.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "48686fc32a22a3754b8e63321857dd2a",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/utils/math/Math.sol",
+        "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "Strings": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Strings.sol/Strings.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [
+        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "ERC165": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ERC165.sol/ERC165.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC165": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "IERC165.sol/IERC165.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "fe63409d8a06818b926cf89e0ea88b1b",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/math/Math.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "Math": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Math.sol/Math.json"
+        }
+      }
+    },
+    "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol": {
+      "lastModificationDate": 1705596047272,
+      "contentHash": "9488ebd4daacfee8ad04811600d7d061",
+      "sourceName": "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {
+            "/home/lyno/dev/cartesi/world-arcade-python/frontend/node_modules/@cartesi/util/contracts/Bitmask.sol": {
+              "Bitmask": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "SignedMath": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "SignedMath.sol/SignedMath.json"
+        }
+      }
+    }
+  }
+}
