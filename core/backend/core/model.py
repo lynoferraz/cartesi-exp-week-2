@@ -175,10 +175,10 @@ def initialize_data():
                 rule_conf_dict = {
                     "cartridge_id":hex2bytes(cartridge_ids[genesis_rule_cartridge]),
                     "name":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("name")),
-                    "description":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("description")),
-                    "args":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("args")),
+                    "description":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("description") or ""),
+                    "args":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("args") or ""),
                     "in_card":bytes.fromhex(str(CoreSettings().genesis_rules[genesis_rule_cartridge].get('in_card') or "")),
-                    "score_function":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("score_function")),
+                    "score_function":str(CoreSettings().genesis_rules[genesis_rule_cartridge].get("score_function") or ""),
                     "start":int(CoreSettings().genesis_rules[genesis_rule_cartridge].get("start") or 0),
                     "end":  int(CoreSettings().genesis_rules[genesis_rule_cartridge].get("end") or 0),
                     "tags": []

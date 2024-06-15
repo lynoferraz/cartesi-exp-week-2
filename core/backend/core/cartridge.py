@@ -11,7 +11,7 @@ from cartesapp.input import query, mutation
 from cartesapp.output import event, output, add_output, emit_event, index_input
 
 from .model import Cartridge, InfoCartridge, create_cartridge, delete_cartridge, change_cartridge_user_address, StringList
-from .core_settings import get_cartridges_path
+from .core_settings import CoreSettings, get_cartridges_path
 
 LOGGER = logging.getLogger(__name__)
 
@@ -73,7 +73,7 @@ class CartridgesOutput(BaseModel):
 ###
 # Mutations
 
-@mutation()
+@mutation(proxy=CoreSettings().proxy_address)
 def insert_cartridge(payload: InsertCartridgePayload) -> bool:
     metadata = get_metadata()
     
@@ -97,7 +97,7 @@ def insert_cartridge(payload: InsertCartridgePayload) -> bool:
 
     return True
 
-@mutation()
+@mutation(proxy=CoreSettings().proxy_address)
 def remove_cartridge(payload: RemoveCartridgePayload) -> bool:
     metadata = get_metadata()
 
@@ -118,7 +118,7 @@ def remove_cartridge(payload: RemoveCartridgePayload) -> bool:
 
     return True
 
-@mutation()
+@mutation(proxy=CoreSettings().proxy_address)
 def transfer_cartridge(payload: TransferCartridgePayload) -> bool:
     metadata = get_metadata()
 

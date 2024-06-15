@@ -82,6 +82,7 @@ class VerificationOutput(BaseModel):
     tape_input_index:       Int
     user_address:           Address
     error_code:             UInt
+    reserved:               Bytes
 
 
 class RuleInfo(BaseModel):
@@ -115,7 +116,7 @@ class RuleTagsOutput(BaseModel):
 ###
 # Mutations
 
-@mutation()
+@mutation(proxy=CoreSettings().proxy_address)
 def create_rule(payload: RulePayload) -> bool:
 
     # check if Cartridge exists
@@ -163,9 +164,11 @@ def create_rule(payload: RulePayload) -> bool:
 
     return True
 
-@mutation(msg_sender=CoreSettings().operator_address)
+@mutation(proxy=CoreSettings().proxy_address)
+# @mutation()
 def verify(payload: VerifyPayload) -> bool:
     metadata = get_metadata()
+    print(f"==== DEBUG ==== {metadata=}")
 
     # get Rule
     rule = Rule.get(lambda r: r.id == payload.rule_id.hex())
@@ -288,7 +291,8 @@ def verify(payload: VerifyPayload) -> bool:
         rule_input_index = rule.input_index,
         tape_hash = hex2bytes(tape_id),
         tape_input_index = metadata.input_index,
-        error_code=0
+        error_code=0,
+        reserved=b''
     )
     common_tags = [rule.cartridge_id,payload.rule_id.hex(),tape_id]
     common_tags.extend(list(rule.tags.name.distinct().keys()))
@@ -304,132 +308,53 @@ def verify(payload: VerifyPayload) -> bool:
 
     return True
 
-@mutation()
-def register_external_verification(payload: VerifyPayload) -> bool:
-    metadata = get_metadata()
-    # get Rule
-    rule = Rule.get(lambda r: r.id == payload.rule_id.hex())
-    if rule is None:
-        msg = f"rule {payload.rule_id.hex()} doesn't exist"
-        LOGGER.error(msg)
-        add_output(msg)
-        return False
+# @mutation()
+# def register_external_verification(payload: VerifyPayload) -> bool:
+#     metadata = get_metadata()
+#     # get Rule
+#     rule = Rule.get(lambda r: r.id == payload.rule_id.hex())
+#     if rule is None:
+#         msg = f"rule {payload.rule_id.hex()} doesn't exist"
+#         LOGGER.error(msg)
+#         add_output(msg)
+#         return False
 
-    if rule.start is not None and rule.start > 0 and rule.start > metadata.timestamp:
-        msg = f"timestamp earlier than rule start"
-        LOGGER.error(msg)
-        add_output(msg)
-        return False
+#     if rule.start is not None and rule.start > 0 and rule.start > metadata.timestamp:
+#         msg = f"timestamp earlier than rule start"
+#         LOGGER.error(msg)
+#         add_output(msg)
+#         return False
 
-    if rule.end is not None and rule.end > 0 and rule.end < metadata.timestamp:
-        msg = f"timestamp later than rule end"
-        LOGGER.error(msg)
-        add_output(msg)
-        return False
+#     if rule.end is not None and rule.end > 0 and rule.end < metadata.timestamp:
+#         msg = f"timestamp later than rule end"
+#         LOGGER.error(msg)
+#         add_output(msg)
+#         return False
 
-    tape_id = generate_tape_id(payload.tape)
+#     tape_id = generate_tape_id(payload.tape)
     
-    if TapeHash.check_duplicate(rule.cartridge_id,tape_id):
-        msg = f"Tape already submitted"
-        LOGGER.error(msg)
-        add_output(msg)
-        return False
+#     if TapeHash.check_duplicate(rule.cartridge_id,tape_id):
+#         msg = f"Tape already submitted"
+#         LOGGER.error(msg)
+#         add_output(msg)
+#         return False
 
-    cartridge = helpers.select(c for c in Cartridge if c.active and c.id == rule.cartridge_id).first()
+#     cartridge = helpers.select(c for c in Cartridge if c.active and c.id == rule.cartridge_id).first()
 
-    if cartridge is None:
-        msg = f"Cartridge not found"
-        LOGGER.error(msg)
-        add_output(msg)
-        return False
+#     if cartridge is None:
+#         msg = f"Cartridge not found"
+#         LOGGER.error(msg)
+#         add_output(msg)
+#         return False
 
-    LOGGER.info(f"Received new tape")
-    tags = ["tape",rule.cartridge_id,payload.rule_id.hex(),tape_id]
-    tags.extend(list(rule.tags.name.distinct().keys()))
-    index_input(tags=tags,value=metadata.timestamp)
-    TapeHash.add(rule.cartridge_id,rule.id,tape_id)
+#     LOGGER.info(f"Received new tape")
+#     tags = ["tape",rule.cartridge_id,payload.rule_id.hex(),tape_id]
+#     tags.extend(list(rule.tags.name.distinct().keys()))
+#     index_input(tags=tags,value=metadata.timestamp)
+#     TapeHash.add(rule.cartridge_id,rule.id,tape_id)
 
-    return True
+#     return True
 
-@mutation(msg_sender=CoreSettings().operator_address)
-def external_verification(payload: ExternalVerificationPayload) -> bool:
-
-    payload_lens = [
-        len(payload.user_addresses),
-        len(payload.rule_ids),
-        len(payload.tape_hashes),
-        len(payload.tape_input_indexes),
-        len(payload.tape_timestamps),
-        len(payload.scores),
-        len(payload.error_codes),
-    ]
-
-    if len(set(payload_lens)) != 1:
-        msg = f"payload have distinct sizes"
-        LOGGER.error(msg)
-        add_output(msg)
-        return False
-    
-    LOGGER.info(f"Received batch of tape verifications")
-    for ind in range(len(payload.tape_hashes)):
-
-        tape_id = payload.tape_hashes[ind]
-
-        # get Rule
-        rule = Rule.get(lambda r: r.id == payload.rule_ids[ind].hex())
-        if rule is None:
-            msg = f"rule {payload.rule_ids[ind].hex()} doesn't exist"
-            LOGGER.warning(msg)
-            # add_output(msg)
-            # return False
-            continue
-        
-        if not TapeHash.check_duplicate(rule.cartridge_id,tape_id.hex()):
-            msg = f"Tape not submitted"
-            LOGGER.warning(msg)
-            # add_output(msg)
-            # return False
-            continue
-
-        if TapeHash.check_verified(rule.cartridge_id,tape_id.hex()):
-            msg = f"Tape already verified"
-            LOGGER.warning(msg)
-            # add_output(msg)
-            # return False
-            continue
-
-        cartridge = helpers.select(c for c in Cartridge if c.active and c.id == rule.cartridge_id).first()
-
-        if cartridge is None:
-            msg = f"Cartridge not found"
-            LOGGER.error(msg)
-            # add_output(msg)
-            # return False
-            continue
-
-        out_ev = VerificationOutput(
-            version=get_version(),
-            cartridge_id = hex2bytes(cartridge.id),
-            cartridge_input_index = cartridge.input_index,
-            cartridge_user_address = cartridge.user_address,
-            user_address = payload.user_addresses[ind],
-            timestamp = payload.tape_timestamps[ind],
-            score = payload.scores[ind],
-            rule_id = hex2bytes(rule.id),
-            rule_input_index = rule.input_index,
-            tape_hash = tape_id,
-            tape_input_index = payload.tape_input_indexes[ind],
-            error_code = payload.error_codes[ind]
-        )
-
-        LOGGER.info(f"Sending tape verification output")
-
-        tags = ['score',rule.cartridge_id,payload.rule_ids[ind].hex(),tape_id.hex()]
-        tags.extend(list(rule.tags.name.distinct().keys()))
-        emit_event(out_ev,tags=tags,value=payload.scores[ind])
-        TapeHash.set_verified(rule.cartridge_id,rule.id,tape_id.hex())
-
-    return True
 
 ###
 # Queries

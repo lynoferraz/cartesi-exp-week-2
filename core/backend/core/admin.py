@@ -10,3 +10,8 @@ LOGGER = logging.getLogger(__name__)
 def operator_address() -> bool:
     add_output(CoreSettings().operator_address)
     return True
+
+@query()
+def proxy_address() -> bool:
+    add_output(CoreSettings().proxy_address)
+    return True

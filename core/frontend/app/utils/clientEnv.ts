@@ -21,5 +21,9 @@ export const envClient = envsafe({
   CONTESTS: json({
     input: process.env.NEXT_PUBLIC_CONTESTS,
     desc: "Contests json list."
-  })
+  }),
+  WORLD_ADDRESS: str({
+    input: process.env.NEXT_PUBLIC_WORLD_ADDRESS,
+    desc: "Mud world ETH address."
+  }),
 })

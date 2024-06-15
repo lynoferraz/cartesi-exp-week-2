@@ -1,6 +1,9 @@
 # Makefile
 
 ENVFILE := .env
+DEPLOY_ENVFILE := .localhost.env
+RECEIPT_FILE := .tx-receipt
+DAPP_FILE := dapp.json
 
 SHELL := /bin/bash
 
@@ -8,6 +11,8 @@ RIV_VERSION := 0.3-rc12
 CARTESI_SDK_RIV_VERSION := 0.6.2-riv
 
 RIVES_VERSION := $(shell git log -1 --format="%at" | xargs -I{} date -d @{} +%Y%m%d.%H%M).$(shell git rev-parse --short HEAD)
+
+MACHINE_HASH := $(shell xxd -p -c32 .cartesi/image/hash)
 
 define setup_venv =
 @if [ ! -d .venv ]; then python3 -m venv .venv; fi
@@ -35,8 +40,8 @@ all: cartesi-riv build build-reader-node
 setup-env: ; $(value setup_venv)
 
 # build targets
-build: --load-env --check-opaddr-env ; $(value setup_venv)
-	cartesapp build --config user=root --config envs=OPERATOR_ADDRESS=${OPERATOR_ADDRESS},RIVES_VERSION=${RIVES_VERSION} $(ARGS)
+build: --load-env --check-opaddr-env --check-pxaddr-env ; $(value setup_venv)
+	cartesapp build --config user=root --config envs=OPERATOR_ADDRESS=${OPERATOR_ADDRESS},RIVES_VERSION=${RIVES_VERSION},PROXY_ADDRESS=${PROXY_ADDRESS} $(ARGS)
 
 build-reader-node: ; $(value setup_venv)
 	cartesapp build-reader-image $(ARGS)
@@ -45,20 +50,70 @@ build-dev-node: ; $(value setup_venv)
 	cartesapp build-dev-image $(ARGS)
 
 build-%: ${ENVFILE}.% --check-envs-% ; $(value setup_venv)
-	. $< && cartesapp build --config user=root --config envs=OPERATOR_ADDRESS=${OPERATOR_ADDRESS},RIVES_VERSION=${RIVES_VERSION} $(ARGS)
+	. $< && cartesapp build --config user=root --config envs=OPERATOR_ADDRESS=${OPERATOR_ADDRESS},RIVES_VERSION=${RIVES_VERSION},PROXY_ADDRESS=${PROXY_ADDRESS} $(ARGS)
 
 # Run targets
-run: --load-env --check-rivemu-env --check-opaddr-env --check-roladdr-env ; $(value setup_venv)
+run: --load-env --check-rivemu-env --check-opaddr-env --check-roladdr-env --check-pxaddr-env ; $(value setup_venv)
 	cartesapp node $(ARGS)
 
-run-dev: --load-env --check-rivemu-env --check-opaddr-env --check-roladdr-env rivemu ; $(value setup_venv)
-	RIVEMU_PATH=${RIVEMU_PATH} OPERATOR_ADDRESS=${OPERATOR_ADDRESS} ROLLUP_HTTP_SERVER_URL=${ROLLUP_HTTP_SERVER_URL} cartesapp node --mode dev $(ARGS)
+devnet:
+	docker run --name anvil --rm --env ANVIL_IP_ADDR=0.0.0.0 -p 8545:8545 cartesi/sdk:0.6.0 devnet --block-time 2 --silent
+
+# devnet: --load-deploy-env
+# 	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" OPERATOR_ADDRESS="${OPERATOR_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
+# 	 docker compose -f docker-compose-anvil.yaml up anvil
+
+deploy-devnet: --deploy-devnet
+	@$(eval DAPP_ADDRESS := $(shell cat ${RECEIPT_FILE} | jq '.logs[-1].data' | xargs cast abi-decode "x()(address,bytes32,address)" | tail -1))
+	@$(eval BLOCK_HASH := $(shell cat ${RECEIPT_FILE} | jq -r '.blockHash'))
+	@$(eval BLOCK_NUMBER := $(shell cat ${RECEIPT_FILE} | jq -r '.blockNumber' | xargs printf "%d"))
+	@$(eval TX_HASH := $(shell cat ${RECEIPT_FILE} | jq -r '.transactionHash'))
+	@echo '{"address":"'${DAPP_ADDRESS}'","blockHash":"'${BLOCK_HASH}'","blockNumber":'${BLOCK_NUMBER}',"transactionHash":"'${TX_HASH}'"}' | jq > ${DAPP_FILE}
+	@cat ${DAPP_FILE}
+	@rm ${RECEIPT_FILE} 
+
+# --deploy-devnet: --load-deploy-env
+# 	@cast send --json --rpc-url "http://localhost:8545" --private-key "${PRIV_KEY}" "${FACTORY_ADDRESS}" "deployContracts(address,address,bytes32,bytes32)" \
+# 		"${OPERATOR_ADDRESS}" \
+#     	"${OPERATOR_ADDRESS}" \
+#     	"${MACHINE_HASH}" \
+#     	"0x0000000000000000000000000000000000000000000000000000000000000000" > ${RECEIPT_FILE}
+
+--deploy-devnet: --load-deploy-env
+	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" OPERATOR_ADDRESS="${OPERATOR_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
+	 docker compose -f docker-compose-anvil.yaml up --quiet-pull --no-log-prefix dapp_deployer | grep -v dapp_deployer > ${RECEIPT_FILE}
+
+CLI_PATH :=  $(shell find ${HOME}/.nvm -path "*@cartesi/cli/dist")
+CLI_NODE_PATH :=  ${CLI_PATH}/node
+
+run-devnet: ${DAPP_FILE} --load-deploy-env
+	# docker cp ${DAPP_FILE} anvil:/usr/share/cartesi/${DAPP_FILE}
+	@$(eval DAPP_ADDRESS := $(shell cat ${DAPP_FILE} | jq -r '.address'))
+	@$(eval BLOCK_HASH := $(shell cat ${DAPP_FILE} | jq -r '.blockHash'))
+	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" OPERATOR_ADDRESS="${OPERATOR_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
+	 CARTESI_LISTEN_PORT=8080 CARTESI_SNAPSHOT_DIR=/usr/share/rollups-node/snapshot CARTESI_BIN_PATH=${CLI_PATH} \
+	 CARTESI_CONTRACTS_APPLICATION_ADDRESS=${DAPP_ADDRESS} CARTESI_CONTRACTS_APPLICATION_DEPLOYMENT_BLOCK_NUMBER=${BLOCK_NUMBER} \
+	 CARTESI_BLOCKCHAIN_HTTP_ENDPOINT="http://host.docker.internal:8545" CARTESI_BLOCKCHAIN_WS_ENDPOINT="ws://host.docker.internal:8545" \
+	 docker compose -f docker-compose-anvil.yaml -f ${CLI_NODE_PATH}/docker-compose-database.yaml -f ${CLI_NODE_PATH}/docker-compose-snapshot-volume.yaml \
+	 -f ${CLI_NODE_PATH}/docker-compose-explorer.yaml -f ${CLI_NODE_PATH}/docker-compose-proxy.yaml -f docker-compose-validator.yaml \
+	 --project-directory . up traefik-config-generator database database_creator prompt validator proxy --attach prompt --attach validator
+
+
+stop-devnet:
+	CARTESI_LISTEN_PORT=8080 CARTESI_SNAPSHOT_DIR=/usr/share/rollups-node/snapshot CARTESI_BIN_PATH=${CLI_PATH} \
+	 docker compose -f ${CLI_NODE_PATH}/docker-compose-database.yaml \
+	 -f ${CLI_NODE_PATH}/docker-compose-explorer.yaml -f ${CLI_NODE_PATH}/docker-compose-proxy.yaml -f docker-compose-validator.yaml \
+	 --project-directory . down
+
+
+run-dev: --load-env --check-rivemu-env --check-opaddr-env --check-roladdr-env rivemu --check-pxaddr-env ; $(value setup_venv)
+	RIVEMU_PATH=${RIVEMU_PATH} OPERATOR_ADDRESS=${OPERATOR_ADDRESS} PROXY_ADDRESS=${PROXY_ADDRESS} ROLLUP_HTTP_SERVER_URL=${ROLLUP_HTTP_SERVER_URL} cartesapp node --mode dev $(ARGS)
 
 run-reader: ; $(value setup_venv)
 	cartesapp node --mode reader $(ARGS)
 
 run-dev-%: ${ENVFILE}.% --check-testnet-envs-% --check-dev-envs-% rivemu ; $(value setup_venv)
-	. $< && RIVEMU_PATH=${RIVEMU_PATH} OPERATOR_ADDRESS=${OPERATOR_ADDRESS} ROLLUP_HTTP_SERVER_URL=${ROLLUP_HTTP_SERVER_URL} \
+	. $< && RIVEMU_PATH=${RIVEMU_PATH} OPERATOR_ADDRESS=${OPERATOR_ADDRESS} PROXY_ADDRESS=${PROXY_ADDRESS} ROLLUP_HTTP_SERVER_URL=${ROLLUP_HTTP_SERVER_URL} \
 	 cartesapp node --mode dev --config rpc-url=${RPC_URL} --config contracts-application-address=${DAPP_ADDRESS} --config contracts-input-box-block=${DAPP_DEPLOY_BLOCK} \
 	 $(ARGS)
 
@@ -86,12 +141,26 @@ ${ENVFILE}:
 	echo ROLLUP_HTTP_SERVER_URL=http://localhost:8080/rollup >> $(ENVFILE)
 	echo RIVEMU_PATH=rivemu >> $(ENVFILE)
 	echo OPERATOR_ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 >> $(ENVFILE)
+	echo PROXY_ADDRESS=0x0b3940925df62Abe67fe9fC9cCDe949a29408C2b >> $(ENVFILE)
 
 --load-env-%: ${ENVFILE}.%
 	@$(eval include include $^)
 
 ${ENVFILE}.%:
 	test ! -f $@ && $(error "file $@ doesn't exist")
+
+--load-deploy-env: ${DEPLOY_ENVFILE}
+	$(eval include include $(PWD)/${DEPLOY_ENVFILE})
+
+${DEPLOY_ENVFILE}:
+	@test ! -f $@ && echo "$(DEPLOY_ENVFILE) not found. Creating with default values" 
+	echo FACTORY_ADDRESS=0x9E32e06Fd23675b2DF8eA8e6b0A25c3DF6a60AbC >> $(DEPLOY_ENVFILE)
+	echo PRIV_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 >> $(DEPLOY_ENVFILE)
+	echo OPERATOR_ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 >> $(DEPLOY_ENVFILE)
+# 	echo export NETWORK=localhost >> $(DEPLOY_ENVFILE)
+# 	echo export RPC_URL=http://127.0.0.1:8545 >> $(DEPLOY_ENVFILE)
+# 	echo export WSS_URL=wss://127.0.0.1:8545 >> $(DEPLOY_ENVFILE)
+# 	echo export CHAIN_ID=31337 >> $(DEPLOY_ENVFILE)
 
 --check-roladdr-env:
 	@test ! -z '${ROLLUP_HTTP_SERVER_URL}' || echo "Must define ROLLUP_HTTP_SERVER_URL in env" && test ! -z '${ROLLUP_HTTP_SERVER_URL}'
@@ -108,8 +177,12 @@ ${ENVFILE}.%:
 --check-opaddr-env:
 	@test ! -z '${OPERATOR_ADDRESS}' || echo "Must define OPERATOR_ADDRESS in env" && test ! -z '${OPERATOR_ADDRESS}'
 
+--check-pxaddr-env:
+	@test ! -z '${PROXY_ADDRESS}' || echo "Must define PROXY_ADDRESS in env" && test ! -z '${PROXY_ADDRESS}'
+
 --check-dev-envs-%: --load-env-%
 	@test ! -z '${OPERATOR_ADDRESS}' || echo "Must define OPERATOR_ADDRESS in env" && test ! -z '${OPERATOR_ADDRESS}'
+	@test ! -z '${PROXY_ADDRESS}' || echo "Must define PROXY_ADDRESS in env" && test ! -z '${PROXY_ADDRESS}'
 	@test ! -z '${RIVEMU_PATH}' || echo "Must define RIVEMU_PATH in env" && test ! -z '${RIVEMU_PATH}'
 	@test ! -z '${ROLLUP_HTTP_SERVER_URL}' || echo "Must define ROLLUP_HTTP_SERVER_URL in env" && test ! -z '${ROLLUP_HTTP_SERVER_URL}'
 
