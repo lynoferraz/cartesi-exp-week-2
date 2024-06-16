@@ -5,9 +5,9 @@ Cartesi Rollups Node version: 1.4.x (cartesi cli version 0.14.x)
 ```
 
 This project is Proof of Concept to add base layer composability for Rives, and any other Cartesi Rollup DApps.
-Base layer composability for Rives and other Cartesi Rollup DApps allows interesting features such as scaling the DApp by dividing it into specialized pieces, evolution by adding new features to a project without the need to hard fork it, and permissionless composability so the community can create new and unpredict features.
+Base layer composability for Rives and other Cartesi Rollup DApps allows interesting features such as scaling the DApp by dividing it into specialized pieces, evolution by adding new features to a project without the need to hard fork it, and permissionless composability so the community can create new and unpredicted features.
 
-We achieve this by designing a CASCADING FRAMEWORK, so new Cartesi Rollups can subscribe to another main rollup to receive the same inputs. By receiving the same inputs and running the same code from the subscribed rollups, the 2nd rollup effectively has immediate and automatic access to the main rollup without the need for any other request, or interaction (at the cost of running the same computation).
+We achieve this by designing a FRAMEWORK for CASCADES, so new Cartesi Rollups can subscribe to another rollup to receive the same inputs. By receiving the same inputs and running the same code from the subscribed rollup, the 2nd rollup effectively has immediate and automatic access to the main rollup without the need for any other request, or interaction (at the cost of running the same computation).
 
 We used MUD framework to facilitate the base layer contracts development, the Cartesapp high-level framework, and the cartesi cli tool.
 
