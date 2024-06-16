@@ -1,4 +1,4 @@
-# Watterfall of Rives
+# Waterfall of Rives
 
 ```
 Cartesi Rollups Node version: 1.4.x (cartesi cli version 0.14.x)
