@@ -9,7 +9,21 @@ Base layer composability for Rives and other Cartesi Rollup DApps allows interes
 
 We achieve this by designing a FRAMEWORK for CASCADES, so new Cartesi Rollups can subscribe to another rollup to receive the same inputs. By receiving the same inputs and running the same code from the subscribed rollup, the 2nd rollup effectively has immediate and automatic access to the main rollup without the need for any other request, or interaction (at the cost of running the same computation).
 
-We used MUD framework to facilitate the base layer contracts development, the Cartesapp high-level framework, and the cartesi cli tool.
+We used [MUD framework](https://mud.dev/introduction) to facilitate the base layer contracts development, the [Cartesapp high-level framework](https://github.com/prototyp3-dev/cartesapp) (which uses [python-cartesi hlf](https://github.com/prototyp3-dev/python-cartesi), [cartesi client](https://github.com/prototyp3-dev/cartesi-client) and the [cartesi cli tool](https://docs.sunodo.io/guide/introduction/what-is-sunodo)), and [NEXTjs](https://nextjs.org/docs) for the frontend.
+
+## Repo Layout
+
+- base-layer
+  
+  Contains the solidity codebase to create a world (in MUD terms) and deploy the core Rives Rollup in `base-layer/core`, and also an example of adding an extension to world in `base-layer/nft-extension`.
+
+- core
+  
+  Includes the Cartesi Rollup [backend code](https://github.com/rives-io/rives-core) and [frontend code](https://github.com/rives-io/rives-frontend) for the core Rives altered to work with the cascades proxy contracts.
+  
+- nft-extension
+  
+  Includes the Cartesi Rollup backend and frontend code for the screenshot ntf extension.
 
 ## Instructions
 
@@ -46,7 +60,7 @@ make build
 make deploy-devnet
 ```
 
-It will print the deployed address and save it to `core/backend/dapp.json`
+It will print the deployed address and save it to `core/backend/dapp.json`. This address should be configured on the base layer contracts by sending a transaction to `core__setDappAddress(address)` on the world address, but the world deploy script already uses the address generated at this step with this code version.
 
 Then, start the core backend:
 
@@ -67,9 +81,18 @@ make run-dev
 
 ### Extension
 
-You'll have to do similar steps for each extension
+You'll have to do similar steps for each extension.
 
-Fisrt, deploy the extension contracts.
+First, build and deploy the nft-extension backend:
+
+```shell
+cd nft-extension/backend
+make build
+make deploy-devnet
+```
+It will print the deployed address and save it to `nft-extension/backend/dapp.json`. Similarly to the core module, this address should be configured on the base layer contracts by sending a transaction to `tapeNft__setDappAddress(address)`, but it already on the nft extension deploy script with current code.
+
+Then, deploy the extension contracts.
 
 ```shell
 cd base-layer/nft-extension
@@ -79,15 +102,9 @@ pnpm mud worldgen
 WORLD_ADDRESS=<world_address> forge script script/TapeNftExtension.s.sol --rpc-url http://localhost:8545 --broadcast
 ```
 
-Then, build and deploy the nft-extension backend:
+The world address could be omited and directly configured on the `base-layer/nft-extension/.env` file.
 
-```shell
-cd nft-extension/backend
-make build
-make deploy-devnet
-```
-
-It will print the deployed address and save it to `nft-extension/backend/dapp.json`
+Also, note that the `script/TapeNftExtension.s.sol` script is subscribing the nft extension to the core by calling the `WORLD.addSystemSubscription(bytes32,bytes32)` method. These steps could be replicated for any other extension cartesi rollup.
 
 Then, start the core backend:
 
@@ -103,3 +120,6 @@ cd nft-extension/frontend
 make node_modules
 make run-dev -p 3001
 ```
+
+Now any tape sent to the core Rives will automatically generate a screenshot nft on the nft extension.
+
