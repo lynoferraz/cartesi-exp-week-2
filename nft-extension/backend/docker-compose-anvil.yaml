@@ -1,0 +1,40 @@
+services:
+    anvil:
+        image: cartesi/sdk:0.6.0
+        command:
+            [
+                "devnet",
+                "--block-time",
+                "${BLOCK_TIME:-2}",
+                "${ANVIL_VERBOSITY:---silent}",
+            ]
+        environment:
+            ANVIL_IP_ADDR: 0.0.0.0
+        ports:
+            - 8545:8545
+
+    dapp_deployer:
+        image: cartesi/sdk:0.6.0
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        command:
+            [
+                "cast",
+                "send",
+                "--json",
+                "--rpc-url",
+                "http://host.docker.internal:8545",
+                "--private-key",
+                "${PRIV_KEY}",
+                "${FACTORY_ADDRESS}",
+                "deployContracts(address,address,bytes32,bytes32)",
+                "${OPERATOR_ADDRESS}",
+                "${OPERATOR_ADDRESS}",
+                "${MACHINE_HASH}",
+                "${MACHINE_HASH}",
+            ]
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+
+volumes:
+    blockchain-data: {}

@@ -5,7 +5,7 @@ import {  ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { sha256 } from "js-sha256";
 import { CartridgeInfo, RuleInfo } from "../backend-libs/core/ifaces";
-import { cartridgeInfo, getOutputs, rules, RulesOutput, VerificationOutput, VerifyPayload } from "../backend-libs/core/lib";
+import { cartridgeInfo, getOutputs, rules, RulesOutput, VerificationOutput, VerifyPayloadProxy } from "../backend-libs/core/lib";
 import { envClient } from "../utils/clientEnv";
 import { getTapesGifs, getTapesImages } from "../utils/util";
 import Image from "next/image";
@@ -97,7 +97,7 @@ function loadingFallback() {
 }
 
 export default function Tapes() {
-  const [verificationInputs, setVerificationInputs] = useState<Array<VerifyPayload>|null>(null);
+  const [verificationInputs, setVerificationInputs] = useState<Array<VerifyPayloadProxy>|null>(null);
   const [gifs, setGifs] = useState<Record<string,string>>({});
   const [imgs, setImgs] = useState<Record<string,string>>({});
   const [cartridgeInfoMap, setCartridgeInfoMap] = useState<Record<string, CartridgeInfo>>({});
@@ -139,7 +139,7 @@ export default function Tapes() {
     let idToRuleInfoMap:Record<string, RuleInfo> = {};
 
     for (let i = 0; i < tapesInputs.length; i++) {
-      const tapeInput: VerifyPayload = tapesInputs[i];
+      const tapeInput: VerifyPayloadProxy = tapesInputs[i];
 
       tapes.add(getTapeId(tapeInput.tape));
       if (! (cartridgeInfoMap[tapeInput.rule_id] || idToInfoMap[tapeInput.rule_id] || idToRuleInfoMap[tapeInput.rule_id]) ) {

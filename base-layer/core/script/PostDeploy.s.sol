@@ -49,7 +49,7 @@ contract PostDeploy is Script {
     selector = world.registerRootFunctionSelector(coreDappSystem, "removeSystemSubscription(bytes32,bytes32)","removeSystemSubscription(bytes32,bytes32)");
     console.logBytes(abi.encodePacked(selector));
 
-    IWorld(worldAddress).core__setDappAddress(0x096eC2b5C0cbA9Cfdc2CAE116012B89c177A04b3);
+    IWorld(worldAddress).core__setDappAddress(0xb35D7fec2ceE073F027fd6cf532628362976233A);
 
     vm.stopBroadcast();
   }

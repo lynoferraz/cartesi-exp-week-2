@@ -12,8 +12,6 @@ CARTESI_SDK_RIV_VERSION := 0.6.2-riv
 
 RIVES_VERSION := $(shell git log -1 --format="%at" | xargs -I{} date -d @{} +%Y%m%d.%H%M).$(shell git rev-parse --short HEAD)
 
-MACHINE_HASH := $(shell xxd -p -c32 .cartesi/image/hash)
-
 define setup_venv =
 @if [ ! -d .venv ]; then python3 -m venv .venv; fi
 @if [[ "VIRTUAL_ENV" != "" ]]; then . .venv/bin/activate; fi
@@ -63,47 +61,64 @@ devnet:
 # 	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" OPERATOR_ADDRESS="${OPERATOR_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
 # 	 docker compose -f docker-compose-anvil.yaml up anvil
 
-deploy-devnet: --deploy-devnet
-	@$(eval DAPP_ADDRESS := $(shell cat ${RECEIPT_FILE} | jq '.logs[-1].data' | xargs cast abi-decode "x()(address,bytes32,address)" | tail -1))
-	@$(eval BLOCK_HASH := $(shell cat ${RECEIPT_FILE} | jq -r '.blockHash'))
-	@$(eval BLOCK_NUMBER := $(shell cat ${RECEIPT_FILE} | jq -r '.blockNumber' | xargs printf "%d"))
-	@$(eval TX_HASH := $(shell cat ${RECEIPT_FILE} | jq -r '.transactionHash'))
-	@echo '{"address":"'${DAPP_ADDRESS}'","blockHash":"'${BLOCK_HASH}'","blockNumber":'${BLOCK_NUMBER}',"transactionHash":"'${TX_HASH}'"}' | jq > ${DAPP_FILE}
-	@cat ${DAPP_FILE}
-	@rm ${RECEIPT_FILE} 
-
 # --deploy-devnet: --load-deploy-env
+# 	@$(eval MACHINE_HASH := $(shell xxd -p -c32 .cartesi/image/hash))
 # 	@cast send --json --rpc-url "http://localhost:8545" --private-key "${PRIV_KEY}" "${FACTORY_ADDRESS}" "deployContracts(address,address,bytes32,bytes32)" \
 # 		"${OPERATOR_ADDRESS}" \
 #     	"${OPERATOR_ADDRESS}" \
 #     	"${MACHINE_HASH}" \
 #     	"0x0000000000000000000000000000000000000000000000000000000000000000" > ${RECEIPT_FILE}
 
+deploy-devnet: --deploy-devnet --test-receipt
+	@$(eval DAPP_ADDRESS := $(shell cat ${RECEIPT_FILE} | jq '.logs[-1].data' | xargs cast abi-decode "x()(address,bytes32,address)" | tail -1))
+	@$(eval CONSENSUS_ADDRESS := $(shell cat ${RECEIPT_FILE} | jq '.logs[-1].topics[1]' | xargs cast abi-decode "x()(address)" | tail -1))
+	@$(eval HISTORY_ADDRESS := $(shell cast call ${CONSENSUS_ADDRESS} "getHistory()" |  xargs cast abi-decode "x()(address)" | tail -1))
+	@$(eval BLOCK_HASH := $(shell cat ${RECEIPT_FILE} | jq -r '.blockHash'))
+	@$(eval BLOCK_NUMBER := $(shell cat ${RECEIPT_FILE} | jq -r '.blockNumber' | xargs printf "%d"))
+	@$(eval TX_HASH := $(shell cat ${RECEIPT_FILE} | jq -r '.transactionHash'))
+	@echo '{"address":"'${DAPP_ADDRESS}'","consensus_address":"'${CONSENSUS_ADDRESS}'","history_address":"'${HISTORY_ADDRESS}'","blockHash":"'${BLOCK_HASH}'","blockNumber":'${BLOCK_NUMBER}',"transactionHash":"'${TX_HASH}'"}' | jq > ${DAPP_FILE}
+	@cat ${DAPP_FILE}
+	@rm ${RECEIPT_FILE} 
+
+--test-receipt:
+	@if [ ! -s ${RECEIPT_FILE}  ]; then rm ${RECEIPT_FILE} ; echo "Error Deploying"; exit 1; fi
+
 --deploy-devnet: --load-deploy-env
-	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" OPERATOR_ADDRESS="${OPERATOR_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
-	 docker compose -f docker-compose-anvil.yaml up --quiet-pull --no-log-prefix dapp_deployer | grep -v dapp_deployer > ${RECEIPT_FILE}
+	@$(eval MACHINE_HASH := $(shell xxd -p -c32 .cartesi/image/hash))
+	@$(eval PROJECT_NAME := $(shell echo ${MACHINE_HASH} | cut -c 2-10))
+	@PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
+	 docker compose -f docker-compose-anvil.yaml --project-name ${PROJECT_NAME} up --quiet-pull --no-log-prefix dapp_deployer | grep -v dapp_deployer | cat > ${RECEIPT_FILE}
+	@PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
+	 docker compose -f docker-compose-anvil.yaml --project-name ${PROJECT_NAME} down dapp_deployer
 
 CLI_PATH :=  $(shell find ${HOME}/.nvm -path "*@cartesi/cli/dist")
 CLI_NODE_PATH :=  ${CLI_PATH}/node
 
 run-devnet: ${DAPP_FILE} --load-deploy-env
-	# docker cp ${DAPP_FILE} anvil:/usr/share/cartesi/${DAPP_FILE}
 	@$(eval DAPP_ADDRESS := $(shell cat ${DAPP_FILE} | jq -r '.address'))
+	@$(eval CONSENSUS_ADDRESS := $(shell cat ${DAPP_FILE} | jq -r '.consensus_address'))
+	@$(eval HISTORY_ADDRESS := $(shell cat ${DAPP_FILE} | jq -r '.history_address'))
 	@$(eval BLOCK_HASH := $(shell cat ${DAPP_FILE} | jq -r '.blockHash'))
-	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" OPERATOR_ADDRESS="${OPERATOR_ADDRESS}" MACHINE_HASH="${MACHINE_HASH}" \
+	@$(eval MACHINE_HASH := $(shell xxd -p -c32 .cartesi/image/hash))
+	@$(eval PROJECT_NAME := $(shell echo ${MACHINE_HASH} | cut -c 2-10))
+	PRIV_KEY="${PRIV_KEY}" FACTORY_ADDRESS="${FACTORY_ADDRESS}" \
 	 CARTESI_LISTEN_PORT=8080 CARTESI_SNAPSHOT_DIR=/usr/share/rollups-node/snapshot CARTESI_BIN_PATH=${CLI_PATH} \
 	 CARTESI_CONTRACTS_APPLICATION_ADDRESS=${DAPP_ADDRESS} CARTESI_CONTRACTS_APPLICATION_DEPLOYMENT_BLOCK_NUMBER=${BLOCK_NUMBER} \
+	 CARTESI_CONTRACTS_AUTHORITY_ADDRESS=${CONSENSUS_ADDRESS}  CARTESI_CONTRACTS_HISTORY_ADDRESS=${HISTORY_ADDRESS} \
 	 CARTESI_BLOCKCHAIN_HTTP_ENDPOINT="http://host.docker.internal:8545" CARTESI_BLOCKCHAIN_WS_ENDPOINT="ws://host.docker.internal:8545" \
 	 docker compose -f docker-compose-anvil.yaml -f ${CLI_NODE_PATH}/docker-compose-database.yaml -f ${CLI_NODE_PATH}/docker-compose-snapshot-volume.yaml \
 	 -f ${CLI_NODE_PATH}/docker-compose-explorer.yaml -f ${CLI_NODE_PATH}/docker-compose-proxy.yaml -f docker-compose-validator.yaml \
-	 --project-directory . up traefik-config-generator database database_creator prompt validator proxy --attach prompt --attach validator
+	  --project-name ${PROJECT_NAME} --project-directory . \
+	  up traefik-config-generator database database_creator prompt validator proxy --attach prompt --attach validator
 
 
 stop-devnet:
+	@$(eval MACHINE_HASH := $(shell xxd -p -c32 .cartesi/image/hash))
+	@$(eval PROJECT_NAME := $(shell echo ${MACHINE_HASH} | cut -c 2-10))
 	CARTESI_LISTEN_PORT=8080 CARTESI_SNAPSHOT_DIR=/usr/share/rollups-node/snapshot CARTESI_BIN_PATH=${CLI_PATH} \
 	 docker compose -f ${CLI_NODE_PATH}/docker-compose-database.yaml \
 	 -f ${CLI_NODE_PATH}/docker-compose-explorer.yaml -f ${CLI_NODE_PATH}/docker-compose-proxy.yaml -f docker-compose-validator.yaml \
-	 --project-directory . down
+	 --project-name ${PROJECT_NAME} --project-directory . down
 
 
 run-dev: --load-env --check-rivemu-env --check-opaddr-env --check-roladdr-env rivemu --check-pxaddr-env ; $(value setup_venv)

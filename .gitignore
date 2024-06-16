@@ -19,8 +19,9 @@ node_modules/
 bindings/
 artifacts/
 broadcast/
+deploys/
 
-.dapp-address
+dapp.json
 .localhost.env
 .cartesi
 yarn.lock
